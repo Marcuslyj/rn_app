@@ -1,7 +1,5 @@
 import {
     createStackNavigator,
-    createMaterialTopTabNavigator,
-    createBottomTabNavigator,
     createSwitchNavigator
 } from 'react-navigation'
 
@@ -49,7 +47,7 @@ export const RootNavigator = createSwitchNavigator(
     }
 )
 
-export const rootCom = 'Init'   //设置跟路由
+export const rootCom = 'Init'   //设置根路由
 
 export const middleware = createReactNavigationReduxMiddleware(
     'root',
