@@ -2,8 +2,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, TextInput, Button } from 'react-native';
 import DataStore from '../expand/dao/DataStore';
-import console = require('console');
-
 
 type Props = {};
 export default class DataStoreDemoPage extends Component<Props> {
