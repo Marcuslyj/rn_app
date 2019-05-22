@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
+import { Platform, StyleSheet, Text, View, Button } from 'react-native';
 import { createMaterialTopTabNavigator } from 'react-navigation'
 import NavigationUtil from '../navigator/NavigationUtil'
 
@@ -14,7 +14,7 @@ export default class PopularPage extends Component<Props> {
         const tabs = {}
         this.tabNames.forEach((item, index) => {
             tabs[`tab${index}`] = {
-                screen: props => <PopularTab {...props} tabLabel={item}/>,
+                screen: props => <PopularTab {...props} tabLabel={item} />,
                 navigationOptions: {
                     title: item
                 }
@@ -49,16 +49,17 @@ export default class PopularPage extends Component<Props> {
 
 class PopularTab extends Component<Props> {
     render() {
-        const { tabLabel, navigation } = this.props
+        const { tabLabel } = this.props
 
         return (
             <View style={styles.container}>
                 <Text style={styles.welcome}>{tabLabel}</Text>
                 <Text onPress={() => {
-                    NavigationUtil.goPage({
-                        navigation
-                    }, "DetailPage")
+                    NavigationUtil.goPage(null, "DetailPage")
                 }}>跳转详情页</Text>
+                <Button title="跳转Fetch页面" onPress={() => {
+                    NavigationUtil.goPage(null, "FetchDemoPage")
+                }}></Button>
             </View>
         );
     }
