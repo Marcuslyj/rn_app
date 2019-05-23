@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, Button } from 'react-native';
 import { connect } from 'react-redux'
 import actions from '../action/index'
+import NavigationUtil from '../navigator/NavigationUtil'
 
 type Props = {};
 class MyPage extends Component<Props> {
@@ -18,6 +19,16 @@ class MyPage extends Component<Props> {
                         this.props.onThemeChange('#159')
                     }}
                 ></Button>
+
+                <Text onPress={() => {
+                    NavigationUtil.goPage(null, "DetailPage")
+                }}>跳转详情页</Text>
+                <Button title="跳转Fetch页面" onPress={() => {
+                    NavigationUtil.goPage(null, "FetchDemoPage")
+                }}></Button>
+                <Button title="离线缓存框架" onPress={() => {
+                    NavigationUtil.goPage(null, "DataStoreDemoPage")
+                }}></Button>
             </View>
         );
     }
