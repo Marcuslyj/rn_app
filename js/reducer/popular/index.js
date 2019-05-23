@@ -8,7 +8,7 @@ export default function onAction(state = defaultState, action) {
             return {
                 ...state,
                 [action.storeName]: {
-                    ...[action.storeName],
+                    ...state[action.storeName],
                     items: action.items,
                     isLoading: false
                 }
@@ -17,7 +17,7 @@ export default function onAction(state = defaultState, action) {
             return {
                 ...state,
                 [action.storeName]: {
-                    ...[action.storeName],
+                    ...state[action.storeName],
                     isLoading: false
                 }
             }
@@ -25,7 +25,7 @@ export default function onAction(state = defaultState, action) {
             return {
                 ...state,
                 [action.storeName]: {
-                    ...[action.storeName],
+                    ...state[action.storeName],
                     isLoading: false
                 }
             }

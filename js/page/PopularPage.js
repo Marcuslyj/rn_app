@@ -5,6 +5,7 @@ import { createMaterialTopTabNavigator } from 'react-navigation'
 // import NavigationUtil from '../navigator/NavigationUtil'
 import { connect } from 'react-redux'
 import actions from '../action/index'
+import PopularItem from '../common/PopularItem'
 
 const URL = 'https://api.github.com/search/repositories?q='
 const QUERY_STR = '&sort=stars'
@@ -77,9 +78,10 @@ class PopularTab extends Component<Props> {
     renderItem(data) {
         const item = data.item
         return (
-            <View style={{ marginTop: 10 }}>
-                <Text style={{ backgroundColor: '#faa' }}>{JSON.stringify(item)}</Text>
-            </View>
+            <PopularItem
+                item={item}
+                onSelect={() => { }}
+            />
         )
     }
     render() {
