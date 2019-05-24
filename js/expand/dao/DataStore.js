@@ -1,4 +1,10 @@
 import { AsyncStorage } from 'react-native';
+import Trendingfrom from 'GitHubTrending'
+
+export const FLAG_STORAGE = {
+    flag_popular: 'popular',
+    flag_trending: 'trending'
+}
 
 export default class DataStore {
     // 保存数据
@@ -15,7 +21,7 @@ export default class DataStore {
         }
     }
     // 获取数据
-    fetchLocalData(url) {
+    fetchLocalData(url, flag) {
         return new Promise((resolve, reject) => {
             AsyncStorage.getItem(url, (err, res) => {
                 if (!err) {
