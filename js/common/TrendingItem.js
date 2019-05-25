@@ -6,9 +6,6 @@ import HTMLView from 'react-native-htmlview'
 export default class PopularItem extends Component {
     render() {
         const { item } = this.props
-        console.log('====================================');
-        console.log(item);
-        console.log('====================================');
         if (!item) return null
 
         let favoriteButton = (

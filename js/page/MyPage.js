@@ -54,9 +54,6 @@ class MyPage extends Component<Props> {
             backgroundColor: THEME_COLOR,
             barStyle: 'light-content'
         }
-        console.log('====================================');
-        console.log(this.getRightButton());
-        console.log('====================================');
         let navigationBar = (
             <NavigationBar
                 title='我的'
