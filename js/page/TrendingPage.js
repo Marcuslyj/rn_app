@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { ActivityIndicator, FlatList, StyleSheet, Text, View, Button, RefreshControl } from 'react-native';
+import { DeviceInfo, ActivityIndicator, FlatList, StyleSheet, Text, View, Button, RefreshControl } from 'react-native';
 import { createMaterialTopTabNavigator } from 'react-navigation'
 // import NavigationUtil from '../navigator/NavigationUtil'
 import { connect } from 'react-redux'
@@ -52,7 +52,8 @@ export default class TrendingPage extends Component<Props> {
                     upperCaseLabel: false,
                     scrollEnabled: true,
                     style: {
-                        backgroundColor: '#678'
+                        backgroundColor: '#678',
+                        height: 30 //fix 开启scrollEnabled时，高度异常
                     },
                     indicatorStyle: styles.indicatorStyle,
                     labelStyle: styles.labelStyle
@@ -60,7 +61,7 @@ export default class TrendingPage extends Component<Props> {
             }
         )
         return (
-            <View style={{ flex: 1, marginTop: 0 }}>
+            <View style={{ flex: 1, marginTop: DeviceInfo.isIPhoneX_deprecated ? 30 : 0 }}>
                 {navigationBar}
                 <TabNavigator />
             </View>
@@ -191,7 +192,8 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     tabStyle: {
-        minWidth: 50
+        // minWidth: 50
+        padding: 0
     },
     indicatorStyle: {
         height: 2,
@@ -199,8 +201,9 @@ const styles = StyleSheet.create({
     },
     labelStyle: {
         fontSize: 13,
-        marginTop: 3,
-        marginBottom: 6
+        margin: 0
+        // marginTop: 3,
+        // marginBottom: 6
     },
     indicatorContainer: {
         alignItems: 'center'
