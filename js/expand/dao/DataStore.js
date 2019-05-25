@@ -1,5 +1,5 @@
 import { AsyncStorage } from 'react-native';
-import Trendingfrom from 'GitHubTrending'
+import Trending from 'GitHubTrending'
 
 export const FLAG_STORAGE = {
     flag_popular: 'popular',
@@ -21,7 +21,7 @@ export default class DataStore {
         }
     }
     // 获取数据
-    fetchLocalData(url, flag) {
+    fetchLocalData(url) {
         return new Promise((resolve, reject) => {
             AsyncStorage.getItem(url, (err, res) => {
                 if (!err) {
@@ -38,22 +38,37 @@ export default class DataStore {
             })
         })
     }
-    fetchNetData(url) {
+    fetchNetData(url, flag) {
         return new Promise((resolve, reject) => {
-            fetch(url)
-                .then(res => {
-                    if (res.ok) {
-                        return res.json()
-                    }
-                    throw new Error('Network response is not ok')
-                })
-                .then(res => {
-                    this.saveData(url, res)
-                    resolve(res)
-                })
-                .catch(err => {
-                    reject(err)
-                })
+            if (flag !== FLAG_STORAGE.flag_trending) {
+                fetch(url)
+                    .then(res => {
+                        if (res.ok) {
+                            return res.json()
+                        }
+                        throw new Error('Network response is not ok')
+                    })
+                    .then(res => {
+                        this.saveData(url, res)
+                        resolve(res)
+                    })
+                    .catch(err => {
+                        reject(err)
+                    })
+            } else {
+                new Trending().fetchTrending(url)
+                    .then(items => {
+                        if (!items) {
+                            throw new Error('responseData is null')
+                        }
+                        this.saveData(url, items)
+                        resolve(items)
+                    })
+                    .catch(error => {
+                        reject(error)
+                    })
+            }
+
         })
     }
     fetchData(url) {
