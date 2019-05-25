@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { ActivityIndicator, FlatList, StyleSheet, Text, View, Button, RefreshControl } from 'react-native';
+import { DeviceInfo, ActivityIndicator, FlatList, StyleSheet, Text, View, Button, RefreshControl } from 'react-native';
 import { createMaterialTopTabNavigator } from 'react-navigation'
 // import NavigationUtil from '../navigator/NavigationUtil'
 import { connect } from 'react-redux'
@@ -63,7 +63,7 @@ export default class PopularPage extends Component<Props> {
             }
         )
         return (
-            <View style={{ flex: 1, marginTop: 0 }}>
+            <View style={{ flex: 1, marginTop: DeviceInfo.isIPhoneX_deprecated ? 30 : 0 }}>
                 {navigationBar}
                 <TabNavigator />
             </View>
