@@ -71,22 +71,23 @@ export default class DataStore {
 
         })
     }
-    fetchData(url) {
+    fetchData(url,flag) {
         return new Promise((resolve, reject) => {
             this.fetchLocalData(url)
                 .then(wrapData => {
                     if (wrapData && DataStore.checkTimestampValid(wrapData.timestamp)) {
                         resolve(wrapData)
                     } else {
-                        this.fetchNetData(url)
+                        this.fetchNetData(url,flag)
                             .then(data => {
                                 resolve(this._wrapData(data))
                             }).catch(error => {
                                 reject(error)
                             })
                     }
-                }).catch(error => {
-                    this.fetchNetData(url)
+                })
+                .catch(error => {
+                    this.fetchNetData(url,flag)
                         .then(data => {
                             resolve(this._wrapData(data))
                         }).catch(error => {
