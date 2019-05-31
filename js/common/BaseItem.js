@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { PropTypes } from 'prop-types'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 export default class BaseItem extends Component {
     static propTypes = {
@@ -14,6 +15,7 @@ export default class BaseItem extends Component {
             isFavorite: this.props.projectModel.isFavorite
         }
     }
+    // props里边的状态发生变化时，及时更新当前state
     static getDerivedStateFromProps(nextProps, prevState) {
         const isFavorite = nextProps.projectModel.isFavorite
         if (prevState.isFavorite !== isFavorite) {
@@ -23,9 +25,28 @@ export default class BaseItem extends Component {
         }
         return null
     }
-    // favoriteIcon(){
-    //     return 
-    // }
+    setFavoriteState() {
+
+    }
+    onPressFavorite() {
+        this.setFavoriteState(!this.state.isFavorite)
+        this.props.onFavorite(this.props.projectModel.item,!this.state.isFavorite)
+    }
+    favoriteIcon() {
+        return (
+            <TouchableOpacity
+                style={{ padding: 6 }}
+                underlayColor={'transparent'}
+                onPress={() => this.onPressFavorite()}
+            >
+                <FontAwesome
+                    name={this.state.isFavorite ? 'star' : 'star-o'}
+                    size={26}
+                    style={{ color: '#678' }}
+                />
+            </TouchableOpacity>
+        )
+    }
 
 }
 

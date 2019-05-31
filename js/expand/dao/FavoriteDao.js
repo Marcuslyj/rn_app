@@ -2,6 +2,7 @@ import { AsyncStorage } from 'react-native';
 
 const FAVORITE_KEY_PREFIX = 'FAVORITE_KEY_PREFIX'
 export default class FavoriteDao {
+    // flag区分最热、趋势模块
     constructor(flag) {
         this.favoriteKey = FAVORITE_KEY_PREFIX + flag
     }
