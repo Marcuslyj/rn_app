@@ -5,6 +5,7 @@ import NavigationBar from '../common/NavigationBar'
 import ViewUtil from '../util/ViewUtil';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import NavigationUtil from '../navigator/NavigationUtil'
+import BackPressComponent from '../common/BackPressComponent'
 
 const TRENDING_URL = 'https://github.com/'
 const THEME_COLOR = '#678'
@@ -23,6 +24,21 @@ export default class DetailPage extends Component<Props> {
             url: this.url,
             canGoBack: false
         }
+        this.webView = null
+        this.backPress = new BackPressComponent({
+            backPress: this.onBackPress.bind(this)
+        })
+    }
+    // 监听返回按钮
+    componentDidMount() {
+        this.backPress.componentDidMount()
+    }
+    componentWillUnmount() {
+        this.backPress.componentWillUnmount()
+    }
+    onBackPress() {
+        this.onBack()
+        return true
     }
     onBack() {
         if (this.state.canGoBack) {
@@ -56,7 +72,6 @@ export default class DetailPage extends Component<Props> {
             canGoBack: navState.canGoBack,
             url: navState.url
         })
-
     }
     render() {
         const titleLayoutStyle = this.state.title.length > 20 ? { marginRight: 30 } : null
