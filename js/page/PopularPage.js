@@ -8,6 +8,7 @@ import actions from '../action/index'
 import PopularItem from '../common/PopularItem'
 import Toast, { DURATION } from 'react-native-easy-toast'
 import NavigationBar from '../common/NavigationBar'
+import NavigationUtil from '../navigator/NavigationUtil';
 
 const URL = 'https://api.github.com/search/repositories?q='
 const QUERY_STR = '&sort=stars'
@@ -103,7 +104,7 @@ class PopularTab extends Component<Props> {
             store = {
                 items: [],
                 isLoading: false,
-                projectModes: [],
+                projectModels: [],
                 hideLoadingMore: true
             }
         }
@@ -117,7 +118,11 @@ class PopularTab extends Component<Props> {
         return (
             <PopularItem
                 item={item}
-                onSelect={() => { }}
+                onSelect={() => {
+                    NavigationUtil.goPage({
+                        projectModel: item
+                    }, 'DetailPage')
+                }}
             />
         )
     }
@@ -146,7 +151,7 @@ class PopularTab extends Component<Props> {
         return (
             <View style={styles.container}>
                 <FlatList
-                    data={store.projectModes}
+                    data={store.projectModels}
                     renderItem={data => this.renderItem(data)}
                     keyExtractor={item => "" + item.id}
                     refreshControl={

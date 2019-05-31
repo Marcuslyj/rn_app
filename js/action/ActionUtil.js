@@ -12,7 +12,7 @@ export function handleData(actionType, dispatch, storeName, data, pageSize) {
         type: actionType,
         items: fixItems,
         storeName,
-        projectModes: pageSize > fixItems.length ? fixItems : fixItems.slice(0, pageSize),// 第一次加载
+        projectModels: pageSize > fixItems.length ? fixItems : fixItems.slice(0, pageSize),// 第一次加载
         pageIndex: 1,
         hideLoadingMore: pageSize > fixItems.length ? false : true
     })
