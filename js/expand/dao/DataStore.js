@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import Trending from 'GitHubTrending'
 
 export const FLAG_STORAGE = {
@@ -8,11 +8,11 @@ export const FLAG_STORAGE = {
 
 export default class DataStore {
     // 保存数据
-    saveData(url, data, cb) {
+    saveData(url, data, callback) {
         if (!data || !url) {
             return
         }
-        AsyncStorage.setItem(url, JSON.stringify(this._wrapData(data)), cb)
+        AsyncStorage.setItem(url, JSON.stringify(this._wrapData(data)), callback)
     }
     _wrapData(data) {
         return {

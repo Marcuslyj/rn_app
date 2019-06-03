@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const FAVORITE_KEY_PREFIX = 'FAVORITE_KEY_PREFIX'
 export default class FavoriteDao {
@@ -14,6 +14,9 @@ export default class FavoriteDao {
      */
     saveFavoriteItem(key, value, callback) {
         AsyncStorage.setItem(key, value, (error, result) => {
+            console.log('====================================');
+            console.log(error);
+            console.log('====================================');
             if (!error) {// 更新favorite的key
                 this.updateFavoriteKeys(key, true)
             }
@@ -33,7 +36,7 @@ export default class FavoriteDao {
                 }
                 let index = favoriteKeys.indexOf(key)
                 if (isAdd) {
-                    if (index !== -1) {
+                    if (index === -1) {
                         favoriteKeys.push(key)
                     }
                 } else {

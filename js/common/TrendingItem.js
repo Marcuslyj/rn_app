@@ -2,25 +2,12 @@ import React, { Component } from 'react';
 import { Image, View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import HTMLView from 'react-native-htmlview'
+import BaseItem from '../common/BaseItem'
 
-export default class PopularItem extends Component {
+export default class PopularItem extends BaseItem {
     render() {
-        const { item } = this.props
-        if (!item) return null
-
-        let favoriteButton = (
-            <TouchableOpacity
-                style={{ padding: 6 }}
-                onPress={() => { }}
-                underlayColor={'transparent'}
-            >
-                <FontAwesome
-                    name={'star-o'}
-                    size={26}
-                    style={{ color: 'orange' }}
-                />
-            </TouchableOpacity>
-        )
+        const { projectModel } = this.props
+        const item = projectModel.item
 
         let description = '<p>' + item.description + '</p>'
         return (
@@ -62,7 +49,7 @@ export default class PopularItem extends Component {
                             <Text>Fork:</Text>
                             <Text>{item.forkCount}</Text>
                         </View>
-                        {favoriteButton}
+                        {this._favoriteIcon()}
                     </View>
                 </View>
             </TouchableOpacity>

@@ -9,10 +9,14 @@ import PopularItem from '../common/PopularItem'
 import Toast, { DURATION } from 'react-native-easy-toast'
 import NavigationBar from '../common/NavigationBar'
 import NavigationUtil from '../navigator/NavigationUtil';
+import FavoriteDao from '../expand/dao/FavoriteDao';
+import { FLAG_STORAGE } from '../expand/dao/DataStore';
+import FavoriteUtil from '../util/FavoriteUtil';
 
 const URL = 'https://api.github.com/search/repositories?q='
 const QUERY_STR = '&sort=stars'
 const THEME_COLOR = '#678'
+const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular)
 
 
 type Props = {};
@@ -90,11 +94,11 @@ class PopularTab extends Component<Props> {
         const url = this.genFetchUrl(this.storeName)
 
         if (loadMore) {
-            onLoadMorePopular(this.storeName, ++store.pageIndex, pageSize, store.items, callback => {
+            onLoadMorePopular(this.storeName, ++store.pageIndex, pageSize, store.items, favoriteDao, callback => {
                 this.refs.toast.show('没有更多了')
             })
         } else {
-            onRefreshPopular(this.storeName, url, pageSize)
+            onRefreshPopular(this.storeName, url, pageSize, favoriteDao)
         }
     }
     _store() {
@@ -117,12 +121,13 @@ class PopularTab extends Component<Props> {
         const item = data.item
         return (
             <PopularItem
-                item={item}
+                projectModel={item}
                 onSelect={() => {
                     NavigationUtil.goPage({
                         projectModel: item
                     }, 'DetailPage')
                 }}
+                onFavorite={(item, isFavorite) => FavoriteUtil.onFavorite(favoriteDao, item, isFavorite, FLAG_STORAGE.flag_popular)}
             />
         )
     }
@@ -153,7 +158,7 @@ class PopularTab extends Component<Props> {
                 <FlatList
                     data={store.projectModels}
                     renderItem={data => this.renderItem(data)}
-                    keyExtractor={item => "" + item.id}
+                    keyExtractor={item => "" + item.item.id}
                     refreshControl={
                         <RefreshControl
                             title={'loading'}
