@@ -213,13 +213,12 @@ class TrendingTab extends Component<Props> {
                 isLoading: false
             }
         }
-
         return (
             <View style={styles.container}>
                 <FlatList
                     data={store.projectModels}
                     renderItem={data => this.renderItem(data)}
-                    keyExtractor={item => "" + (item.fullName)}
+                    keyExtractor={item => "" + (item.item.fullName)}
                     refreshControl={
                         <RefreshControl
                             title={'loading'}

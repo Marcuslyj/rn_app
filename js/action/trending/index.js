@@ -23,19 +23,19 @@ export const onRefreshTrending = (storeName, url, pageSize, favoriteDao) => disp
         })
 }
 
-export function onLoadMoreTrending(storeName, pageIndex, pageSize, dataArray = [], favoriteDao, cb) {
+export function onLoadMoreTrending(storeName, pageIndex, pageSize, dataArray = [], favoriteDao, callback) {
     return dispatch => {
         setTimeout(() => {
             if ((pageIndex - 1) * pageSize >= dataArray.length) {
-                if (typeof cb === 'function') {
-                    cb('no more data')
+                if (typeof callback === 'function') {
+                    callback('no more data')
                 }
                 dispatch({
                     type: Types.TRENDING_LOAD_MORE_FAIL,
                     error: 'no more',
                     storeName: storeName,
                     pageIndex: --pageIndex,
-                    projectModels: dataArray
+                    items: dataArray
                 })
             } else {
                 let max = pageSize * pageIndex > dataArray.length ? dataArray.length : pageSize * pageIndex
