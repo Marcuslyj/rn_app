@@ -1,8 +1,8 @@
 import Types from '../types'
 import DataStore, { FLAG_STORAGE } from '../../expand/dao/DataStore'
-import { handleData } from '../ActionUtil'
+import { handleData, _projectModels } from '../ActionUtil'
 
-export const onRefreshTrending = (storeName, url, pageSize) => dispatch => {
+export const onRefreshTrending = (storeName, url, pageSize, favoriteDao) => dispatch => {
     dispatch({
         type: Types.TRENDING_REFRESH,
         storeName: storeName
@@ -10,7 +10,7 @@ export const onRefreshTrending = (storeName, url, pageSize) => dispatch => {
     let dataStore = new DataStore()
     dataStore.fetchData(url, FLAG_STORAGE.flag_trending)
         .then(data => {
-            handleData(Types.TRENDING_REFRESH_SUCCESS, dispatch, storeName, data, pageSize)
+            handleData(Types.TRENDING_REFRESH_SUCCESS, dispatch, storeName, data, pageSize, favoriteDao)
         })
         .catch(error => {
             console.log(error)
@@ -23,7 +23,7 @@ export const onRefreshTrending = (storeName, url, pageSize) => dispatch => {
         })
 }
 
-export function onLoadMoreTrending(storeName, pageIndex, pageSize, dataArray = [], cb) {
+export function onLoadMoreTrending(storeName, pageIndex, pageSize, dataArray = [], favoriteDao, cb) {
     return dispatch => {
         setTimeout(() => {
             if ((pageIndex - 1) * pageSize >= dataArray.length) {
@@ -39,12 +39,14 @@ export function onLoadMoreTrending(storeName, pageIndex, pageSize, dataArray = [
                 })
             } else {
                 let max = pageSize * pageIndex > dataArray.length ? dataArray.length : pageSize * pageIndex
-                dispatch({
-                    type: Types.TRENDING_LOAD_MORE_SUCCESS,
-                    storeName,
-                    pageIndex,
-                    projectModels: dataArray.slice(0, max),
-                    items: dataArray
+                _projectModels(dataArray.slice(0, max), favoriteDao, projectModels => {
+                    dispatch({
+                        type: Types.TRENDING_LOAD_MORE_SUCCESS,
+                        storeName,
+                        pageIndex,
+                        projectModels,
+                        items: dataArray
+                    })
                 })
             }
         }, 500)

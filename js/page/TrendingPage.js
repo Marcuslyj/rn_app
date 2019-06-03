@@ -14,10 +14,14 @@ import NavigationBar from '../common/NavigationBar'
 import NavigationUtil from '../navigator/NavigationUtil';
 import TrendingDialog, { TimeSpans } from '../common/TrendingDialog'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import FavoriteDao from '../expand/dao/FavoriteDao';
+import { FLAG_STORAGE } from '../expand/dao/DataStore';
+import FavoriteUtil from '../util/FavoriteUtil';
 
 const URL = 'https://github.com/trending/'
 const THEME_COLOR = '#678'
 const EVENT_TYPE_TIME_SPAN_CHANGE = 'EVENT_TYPE_TIME_SPAN_CHANGE'
+const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_trending)
 
 type Props = {};
 export default class TrendingPage extends Component<Props> {
@@ -153,11 +157,11 @@ class TrendingTab extends Component<Props> {
         const url = this.genFetchUrl(this.storeName)
 
         if (loadMore) {
-            onLoadMoreTrending(this.storeName, ++store.pageIndex, pageSize, store.items, callback => {
+            onLoadMoreTrending(this.storeName, ++store.pageIndex, pageSize, store.items, favoriteDao, callback => {
                 this.refs.toast.show('没有更多了')
             })
         } else {
-            onRefreshTrending(this.storeName, url, pageSize)
+            onRefreshTrending(this.storeName, url, pageSize, favoriteDao)
         }
     }
     _store() {
@@ -180,12 +184,13 @@ class TrendingTab extends Component<Props> {
         const item = data.item
         return (
             <TrendingItem
-                item={item}
+                projectModel={item}
                 onSelect={() => {
                     NavigationUtil.goPage({
                         projectModel: item
                     }, 'DetailPage')
                 }}
+                onFavorite={(item, isFavorite) => FavoriteUtil.onFavorite(favoriteDao, item, isFavorite, FLAG_STORAGE.flag_trending)}
             />
         )
     }
@@ -214,7 +219,7 @@ class TrendingTab extends Component<Props> {
                 <FlatList
                     data={store.projectModels}
                     renderItem={data => this.renderItem(data)}
-                    keyExtractor={item => "" + (item.id || item.fullName)}
+                    keyExtractor={item => "" + (item.fullName)}
                     refreshControl={
                         <RefreshControl
                             title={'loading'}

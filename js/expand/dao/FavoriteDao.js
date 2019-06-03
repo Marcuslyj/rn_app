@@ -14,9 +14,6 @@ export default class FavoriteDao {
      */
     saveFavoriteItem(key, value, callback) {
         AsyncStorage.setItem(key, value, (error, result) => {
-            console.log('====================================');
-            console.log(error);
-            console.log('====================================');
             if (!error) {// 更新favorite的key
                 this.updateFavoriteKeys(key, true)
             }
