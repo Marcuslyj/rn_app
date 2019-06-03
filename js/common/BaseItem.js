@@ -31,6 +31,11 @@ export default class BaseItem extends Component {
             isFavorite: isFavorite
         })
     }
+    onItemClick() {
+        this.props.onSelect(isFavorite => {
+            this.setFavoriteState(isFavorite)
+        })
+    }
     onPressFavorite() {
         let isFavorite = !this.state.isFavorite
         this.setFavoriteState(isFavorite)
