@@ -99,6 +99,10 @@ class PopularTab extends Component {
             }
         })
     }
+    componentWillUnmount() {
+        EventBus.getInstance().removeListener(this.favoriteChangeListener)
+        EventBus.getInstance().removeListener(this.bottomTabSelectListener)
+    }
     loadData(loadMore, refreshFavorite) {
         const { onRefreshPopular, onLoadMorePopular, onFlushPopularFavorite } = this.props
         const store = this._store()
@@ -159,8 +163,6 @@ class PopularTab extends Component {
             )
     }
     render() {
-        // const { popular } = this.props
-        // let store = popular && popular[this.storeName]
         let store = this._store()
         if (!store) {
             store = {

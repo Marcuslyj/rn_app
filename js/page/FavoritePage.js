@@ -112,7 +112,7 @@ class FavoriteTab extends Component {
         FavoriteUtil.onFavorite(this.favoriteDao, item, isFavorite, this.storeName)
         if (this.storeName === FLAG_STORAGE.flag_popular) {
             EventBus.getInstance().fireEvent(EventTypes.favorite_change_popular)
-        } else {
+        } else {           
             EventBus.getInstance().fireEvent(EventTypes.favorite_change_trending)
         }
     }
