@@ -2,43 +2,25 @@
 import React, { Component } from 'react';
 import { DeviceInfo, ActivityIndicator, FlatList, StyleSheet, Text, View, Button, RefreshControl } from 'react-native';
 import { createMaterialTopTabNavigator } from 'react-navigation'
-// import NavigationUtil from '../navigator/NavigationUtil'
 import { connect } from 'react-redux'
 import actions from '../action/index'
 import PopularItem from '../common/PopularItem'
+import TrendingItem from '../common/TrendingItem'
 import Toast, { DURATION } from 'react-native-easy-toast'
 import NavigationBar from '../common/NavigationBar'
-import NavigationUtil from '../navigator/NavigationUtil';
 import FavoriteDao from '../expand/dao/FavoriteDao';
 import { FLAG_STORAGE } from '../expand/dao/DataStore';
-import FavoriteUtil from '../util/FavoriteUtil';
+import NavigationUtil from '../navigator/NavigationUtil';
+import FavoriteUtil from '../util/FavoriteUtil'
 
-const URL = 'https://api.github.com/search/repositories?q='
-const QUERY_STR = '&sort=stars'
 const THEME_COLOR = '#678'
-const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular)
 
-
-export default class PopularPage extends Component {
+export default class FavoritePage extends Component {
     constructor(props) {
         super(props)
-        this.tabNames = ['Java', 'Android', 'IOS', 'React', 'React Native', 'PHP']
+        // this.tabNames = ['最热', '趋势']
     }
-    _genTabs() {
-        const tabs = {}
-        this.tabNames.forEach((item, index) => {
-            // console.log(index);
 
-            tabs[`tab${index}`] = {
-                // screen: props => <PopularTab {...props} tabLabel={item} />,
-                screen: props => <PopularTabPage {...props} tabLabel={item} />,
-                navigationOptions: {
-                    title: item
-                }
-            }
-        })
-        return tabs
-    }
     render() {
         let statusBar = {
             backgroundColor: THEME_COLOR,
@@ -46,13 +28,27 @@ export default class PopularPage extends Component {
         }
         let navigationBar = (
             <NavigationBar
-                title='最热'
+                title='收藏'
                 statusBar={statusBar}
                 style={{ backgroundColor: THEME_COLOR }}
             />
         )
+
         const TabNavigator = createMaterialTopTabNavigator(
-            this._genTabs(),
+            {
+                'Popular': {
+                    screen: props => <FavoriteTabPage {...props} flag={FLAG_STORAGE.flag_popular} />,
+                    navigationOptions: {
+                        title: '最热'
+                    }
+                },
+                'trending': {
+                    screen: props => <FavoriteTabPage {...props} flag={FLAG_STORAGE.flag_trending} />,
+                    navigationOptions: {
+                        title: '趋势'
+                    }
+                }
+            },
             {
                 tabBarOptions: {
                     tabStyle: styles.tabStyle,
@@ -76,76 +72,51 @@ export default class PopularPage extends Component {
         )
     }
 }
-const pageSize = 10
-class PopularTab extends Component {
+class FavoriteTab extends Component {
     constructor(props) {
         super(props)
-        const { tabLabel } = this.props
-        this.storeName = tabLabel
+        const { flag } = this.props
+        this.storeName = flag
+        this.favoriteDao = new FavoriteDao(flag)
     }
     componentDidMount() {
         this.loadData()
     }
-    loadData(loadMore) {
-        const { onRefreshPopular, onLoadMorePopular } = this.props
-        const store = this._store()
-
-        const url = this.genFetchUrl(this.storeName)
-
-        if (loadMore) {
-            onLoadMorePopular(this.storeName, ++store.pageIndex, pageSize, store.items, favoriteDao, callback => {
-                this.refs.toast.show('没有更多了')
-            })
-        } else {
-            onRefreshPopular(this.storeName, url, pageSize, favoriteDao)
-        }
+    loadData() {
+        const { onLoadFavoriteData } = this.props
+        onLoadFavoriteData(this.storeName)
     }
     _store() {
-        const { popular } = this.props
-        let store = popular[this.storeName]
+        const { favorite } = this.props
+        let store = favorite[this.storeName]
         if (!store) {
             store = {
                 items: [],
                 isLoading: false,
                 projectModels: [],
-                hideLoadingMore: true
             }
         }
         return store
     }
-    genFetchUrl(key) {
-        return URL + key + QUERY_STR
-    }
     renderItem(data) {
         const item = data.item
+        const Item = this.storeName === FLAG_STORAGE.flag_popular ? PopularItem : TrendingItem
+
         return (
-            <PopularItem
+            <Item
                 projectModel={item}
                 onSelect={(callback) => {
                     NavigationUtil.goPage({
                         projectModel: item,
-                        flag: FLAG_STORAGE.flag_popular,
+                        flag: this.storeName,
                         callback
                     }, 'DetailPage')
                 }}
-                onFavorite={(item, isFavorite) => FavoriteUtil.onFavorite(favoriteDao, item, isFavorite, FLAG_STORAGE.flag_popular)}
+                onFavorite={(item, isFavorite) => FavoriteUtil.onFavorite(this.favoriteDao, item, isFavorite, this.storeName)}
             />
         )
     }
-    genIndicator() {
-        return this._store().hideLoadingMore ? null :
-            (
-                <View style={styles.indicatorContainer}>
-                    <ActivityIndicator
-                        style={styles.indicator}
-                    />
-                    <Text>正在加载更多</Text>
-                </View>
-            )
-    }
     render() {
-        // const { popular } = this.props
-        // let store = popular && popular[this.storeName]
         let store = this._store()
         if (!store) {
             store = {
@@ -159,7 +130,7 @@ class PopularTab extends Component {
                 <FlatList
                     data={store.projectModels}
                     renderItem={data => this.renderItem(data)}
-                    keyExtractor={item => "" + item.item.id}
+                    keyExtractor={item => "" + (item.item.fullName || item.item.id)}
                     refreshControl={
                         <RefreshControl
                             title={'loading'}
@@ -170,20 +141,6 @@ class PopularTab extends Component {
                             tintColor={THEME_COLOR}
                         />
                     }
-                    ListFooterComponent={() => this.genIndicator()}
-                    onEndReached={() => {
-                        // 保证onMomentumScrollBegin先执行
-                        setTimeout(() => {
-                            if (this.canLoadMore) {
-                                this.canLoadMore = false
-                                this.loadData(true)
-                            }
-                        }, 100)
-                    }}
-                    onEndReachedThreshold={0.5}
-                    onMomentumScrollBegin={() => {
-                        this.canLoadMore = true
-                    }}
                 />
                 <Toast ref='toast' position='center' />
             </View>
@@ -192,26 +149,21 @@ class PopularTab extends Component {
 }
 
 const mapStateToProps = state => ({
-    popular: state.popular
+    favorite: state.favorite
 })
-// const mapDispatchToProps = dispatch => ({
-//     onRefreshPopular: (storeName, url) => dispatch(actions.onRefreshPopular(storeName, url))
-// })
 
-const PopularTabPage = connect(
+const FavoriteTabPage = connect(
     mapStateToProps,
     {
-        onRefreshPopular: actions.onRefreshPopular,
-        onLoadMorePopular: actions.onLoadMorePopular
+        onLoadFavoriteData: actions.onLoadFavoriteData
     }
-)(PopularTab)
+)(FavoriteTab)
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
     tabStyle: {
-        // minWidth: 50
         padding: 0
     },
     indicatorStyle: {
@@ -221,8 +173,6 @@ const styles = StyleSheet.create({
     labelStyle: {
         fontSize: 13,
         margin: 0
-        // marginTop: 3,
-        // marginBottom: 6
     },
     indicatorContainer: {
         alignItems: 'center'

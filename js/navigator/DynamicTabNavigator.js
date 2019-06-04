@@ -7,7 +7,7 @@ type Props = {};
 
 import PopularPage from '../page/PopularPage'
 import TrendingPage from '../page/TrendingPage'
-import FavouritePage from '../page/FavouritePage'
+import FavoritePage from '../page/FavoritePage'
 import MyPage from '../page/MyPage'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import Entypo from 'react-native-vector-icons/Entypo'
@@ -43,8 +43,8 @@ const TABS = {
             )
         }
     },
-    FavouritePage: {
-        screen: FavouritePage,
+    FavoritePage: {
+        screen: FavoritePage,
         navigationOptions: {
             tabBarLabel: "收藏",
             tabBarIcon: ({ tintColor, focused }) => (
@@ -81,9 +81,9 @@ class DynamicTabNavigator extends Component<Props> {
         if (this.Tabs) {
             return this.Tabs
         }
-        const { PopularPage, TrendingPage, FavouritePage, MyPage } = TABS
+        const { PopularPage, TrendingPage, FavoritePage, MyPage } = TABS
         // 根据需要
-        const tabs = { PopularPage, TrendingPage, FavouritePage, MyPage }
+        const tabs = { PopularPage, TrendingPage, FavoritePage, MyPage }
         return this.Tabs = createBottomTabNavigator(tabs, {
             tabBarComponent: props => {
                 return <TabBarComponent {...props} theme={this.props.theme} />

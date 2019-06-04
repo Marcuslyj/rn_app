@@ -3,8 +3,7 @@ import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, TextInput, Button } from 'react-native';
 
 
-type Props = {};
-export default class FetchDemoPage extends Component<Props> {
+export default class FetchDemoPage extends Component {
     constructor(props) {
         super(props)
         this.state = {

@@ -3,9 +3,7 @@ import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import NavigationUtil from '../navigator/NavigationUtil'
 
-
-type Props = {};
-export default class WelcomePage extends Component<Props> {
+export default class WelcomePage extends Component {
     componentDidMount() {
         this.timer = setTimeout(() => {
             const { navigation } = this.props

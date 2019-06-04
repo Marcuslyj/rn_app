@@ -53,7 +53,7 @@ export default class FavoriteDao {
             AsyncStorage.getItem(this.favoriteKey, (error, result) => {
                 if (!error) {
                     try {
-                        resolve(result)
+                        resolve(JSON.parse(result))
                     } catch (e) {
                         reject(error)
                     }
@@ -86,16 +86,21 @@ export default class FavoriteDao {
                         AsyncStorage.multiGet(keys, (error, stores) => {
                             try {
                                 stores.map((result, i, store) => {
-                                    let key = store[i][0]
-                                    let value = store[i][1]
-                                    if (value) items.push(JSON.parse(value))
+                                    let key = store[i][0];
+                                    let value = store[i][1];
+                                    if (value) items.push(JSON.parse(value));
                                 })
                                 resolve(items)
                             } catch (e) {
                                 reject(e)
                             }
                         })
+                    } else {
+                        resolve(items)
                     }
+                })
+                .catch(e => {
+                    reject(e)
                 })
         })
     }

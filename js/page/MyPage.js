@@ -10,8 +10,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 
 const THEME_COLOR = 'orange'
 
-type Props = {};
-class MyPage extends Component<Props> {
+class MyPage extends Component {
     getRightButton() {
         return (
             <View style={{ flexDirection: 'row' }}>

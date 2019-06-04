@@ -10,9 +10,7 @@ import FavoriteDao from '../expand/dao/FavoriteDao'
 
 const TRENDING_URL = 'https://github.com/'
 const THEME_COLOR = '#678'
-
-type Props = {};
-export default class DetailPage extends Component<Props> {
+export default class DetailPage extends Component {
     constructor(props) {
         super(props)
         this.params = props.navigation.state.params

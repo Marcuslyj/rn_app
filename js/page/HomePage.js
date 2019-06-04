@@ -7,9 +7,8 @@ import { BackHandler } from 'react-native'
 import { NavigationActions } from 'react-navigation';
 import BackPressComponent from '../common/BackPressComponent'
 
-type Props = {};
 
-class HomePage extends Component<Props> {
+class HomePage extends Component {
     constructor(props) {
         super(props)
         this.backPress = new BackPressComponent({

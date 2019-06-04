@@ -23,8 +23,7 @@ const THEME_COLOR = '#678'
 const EVENT_TYPE_TIME_SPAN_CHANGE = 'EVENT_TYPE_TIME_SPAN_CHANGE'
 const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_trending)
 
-type Props = {};
-export default class TrendingPage extends Component<Props> {
+export default class TrendingPage extends Component {
     constructor(props) {
         super(props)
         this.tabNames = ['All', 'C', 'C#', 'PHP', 'JavaScript']
@@ -132,7 +131,7 @@ export default class TrendingPage extends Component<Props> {
     }
 }
 const pageSize = 10
-class TrendingTab extends Component<Props> {
+class TrendingTab extends Component {
     constructor(props) {
         super(props)
         const { tabLabel, timeSpan } = this.props

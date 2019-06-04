@@ -32,9 +32,9 @@ export async function _projectModels(showItems, favoriteDao, callback) {
     try {
         // 获取收藏的keys
         keys = await favoriteDao.getFavoriteKeys()
-        if(keys){
-            keys = JSON.parse(keys)
-        }
+        // if(keys){
+        //     keys = JSON.parse(keys)
+        // }
     } catch (error) {
         console.log(error);
     }

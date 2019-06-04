@@ -35,7 +35,7 @@ export default class TrendingItem extends BaseItem {
                     <View style={styles.row}>
                         <View style={styles.row}>
                             <Text>Built by:</Text>
-                            {item.contributors.map((result, i, arr) => {
+                            {/* {item.contributors.map((result, i, arr) => {
                                 return (
                                     <Image
                                         style={{ height: 22, width: 22, margin: 2 }}
@@ -43,7 +43,7 @@ export default class TrendingItem extends BaseItem {
                                         key={i}
                                     />
                                 )
-                            })}
+                            })} */}
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                             <Text>Fork:</Text>
