@@ -53,7 +53,7 @@ export default class FavoritePage extends Component {
                 tabBarOptions: {
                     tabStyle: styles.tabStyle,
                     upperCaseLabel: false,
-                    scrollEnabled: true,
+                    // scrollEnabled: true,
                     style: {
                         backgroundColor: '#678',
                         height: 30 //fix 开启scrollEnabled时，高度异常
