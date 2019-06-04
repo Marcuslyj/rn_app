@@ -12,6 +12,8 @@ import NavigationUtil from '../navigator/NavigationUtil';
 import FavoriteDao from '../expand/dao/FavoriteDao';
 import { FLAG_STORAGE } from '../expand/dao/DataStore';
 import FavoriteUtil from '../util/FavoriteUtil';
+import EventBus from 'react-native-event-bus';
+import EventTypes from '../util/EventTypes';
 
 const URL = 'https://api.github.com/search/repositories?q='
 const QUERY_STR = '&sort=stars'
@@ -82,12 +84,23 @@ class PopularTab extends Component {
         super(props)
         const { tabLabel } = this.props
         this.storeName = tabLabel
+        this.isFavoriteChanged = false
     }
     componentDidMount() {
         this.loadData()
+
+        EventBus.getInstance().addListener(EventTypes.favorite_change_popular, this.favoriteChangeListener = () => {
+            this.isFavoriteChanged = true
+        })
+
+        EventBus.getInstance().addListener(EventTypes.bottom_tab_select, this.bottomTabSelectListener = data => {
+            if (data.to === 0 && this.isFavoriteChanged) {
+                this.loadData(null, true)
+            }
+        })
     }
-    loadData(loadMore) {
-        const { onRefreshPopular, onLoadMorePopular } = this.props
+    loadData(loadMore, refreshFavorite) {
+        const { onRefreshPopular, onLoadMorePopular, onFlushPopularFavorite } = this.props
         const store = this._store()
 
         const url = this.genFetchUrl(this.storeName)
@@ -96,6 +109,8 @@ class PopularTab extends Component {
             onLoadMorePopular(this.storeName, ++store.pageIndex, pageSize, store.items, favoriteDao, callback => {
                 this.refs.toast.show('没有更多了')
             })
+        } else if (refreshFavorite) {
+            onFlushPopularFavorite(this.storeName, store.pageIndex, pageSize, store.items, favoriteDao)
         } else {
             onRefreshPopular(this.storeName, url, pageSize, favoriteDao)
         }
@@ -194,15 +209,13 @@ class PopularTab extends Component {
 const mapStateToProps = state => ({
     popular: state.popular
 })
-// const mapDispatchToProps = dispatch => ({
-//     onRefreshPopular: (storeName, url) => dispatch(actions.onRefreshPopular(storeName, url))
-// })
 
 const PopularTabPage = connect(
     mapStateToProps,
     {
         onRefreshPopular: actions.onRefreshPopular,
-        onLoadMorePopular: actions.onLoadMorePopular
+        onLoadMorePopular: actions.onLoadMorePopular,
+        onFlushPopularFavorite: actions.onFlushPopularFavorite
     }
 )(PopularTab)
 

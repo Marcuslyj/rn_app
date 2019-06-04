@@ -12,6 +12,8 @@ import FavoriteDao from '../expand/dao/FavoriteDao';
 import { FLAG_STORAGE } from '../expand/dao/DataStore';
 import NavigationUtil from '../navigator/NavigationUtil';
 import FavoriteUtil from '../util/FavoriteUtil'
+import EventBus from 'react-native-event-bus';
+import EventTypes from '../util/EventTypes';
 
 const THEME_COLOR = '#678'
 
@@ -80,11 +82,19 @@ class FavoriteTab extends Component {
         this.favoriteDao = new FavoriteDao(flag)
     }
     componentDidMount() {
-        this.loadData()
+        this.loadData(true)
+        EventBus.getInstance().addListener(EventTypes.bottom_tab_select, this.listener = data => {
+            if (data.to === 2) {
+                this.loadData(false)
+            }
+        })
     }
-    loadData() {
+    componentWillUnmount() {
+        EventBus.getInstance().removeListener(this.listener);
+    }
+    loadData(isShowLoading) {
         const { onLoadFavoriteData } = this.props
-        onLoadFavoriteData(this.storeName)
+        onLoadFavoriteData(this.storeName, isShowLoading)
     }
     _store() {
         const { favorite } = this.props
@@ -97,6 +107,14 @@ class FavoriteTab extends Component {
             }
         }
         return store
+    }
+    onFavorite(item, isFavorite) {
+        FavoriteUtil.onFavorite(this.favoriteDao, item, isFavorite, this.storeName)
+        if (this.storeName === FLAG_STORAGE.flag_popular) {
+            EventBus.getInstance().fireEvent(EventTypes.favorite_change_popular)
+        } else {
+            EventBus.getInstance().fireEvent(EventTypes.favorite_change_trending)
+        }
     }
     renderItem(data) {
         const item = data.item
@@ -112,7 +130,7 @@ class FavoriteTab extends Component {
                         callback
                     }, 'DetailPage')
                 }}
-                onFavorite={(item, isFavorite) => FavoriteUtil.onFavorite(this.favoriteDao, item, isFavorite, this.storeName)}
+                onFavorite={(item, isFavorite) => this.onFavorite(item, isFavorite)}
             />
         )
     }
@@ -137,7 +155,7 @@ class FavoriteTab extends Component {
                             titleColor={THEME_COLOR}
                             colors={[THEME_COLOR]}
                             refreshing={store.isLoading}
-                            onRefresh={() => { this.loadData() }}
+                            onRefresh={() => { this.loadData(true) }}
                             tintColor={THEME_COLOR}
                         />
                     }
