@@ -13,7 +13,7 @@ const PARALLAX_HEADER_HEIGHT = 270;
 const TOP = (Platform.OS === 'ios') ? 20 + (DeviceInfo.isIPhoneX_deprecated ? 24 : 0) : 0;
 const STICKY_HEADER_HEIGHT = (Platform.OS === 'ios') ? GlobalStyles.nav_bar_height_ios + TOP : GlobalStyles.nav_bar_height_android;
 
-export const FLAG_ABOUT = {flag_about: 'about', flag_about_me: 'about_me'};
+export const FLAG_ABOUT = { flag_about: 'about', flag_about_me: 'about_me' };
 
 export default class AboutCommon {
     constructor(props, updateState) {
@@ -51,7 +51,7 @@ export default class AboutCommon {
     componentWillUnmount() {
         this.backPress.componentWillUnmount()
     }
-    onShare(){}
+    onShare() { }
 
     getParallaxRenderConfig(params) {
         let config = {};
@@ -135,7 +135,8 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 16,
         marginRight: 10,
-        marginLeft: 10
+        marginLeft: 10,
+        lineHeight: 18
     },
     stickySection: {
         height: STICKY_HEADER_HEIGHT,

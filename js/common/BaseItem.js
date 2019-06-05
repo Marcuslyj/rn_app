@@ -58,7 +58,3 @@ export default class BaseItem extends Component {
     }
 
 }
-
-const styles = StyleSheet.create({
-
-})
