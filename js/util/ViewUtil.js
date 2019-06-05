@@ -87,6 +87,22 @@ export default class ViewUtil {
     static getMenuItem(callBack, menu, color, expandableIco) {
         return ViewUtil.getSettingItem(callBack, menu.name, color, menu.Icons, menu.icon, expandableIco)
     }
+    /**
+     * 获取分享按钮
+     * @param callBack
+     * @returns {XML}
+     */
+    static getShareButton(callBack) {
+        return <TouchableOpacity
+            underlayColor={'transparent'}
+            onPress={callBack}
+        >
+            <Ionicons
+                name={'md-share'}
+                size={20}
+                style={{ opacity: 0.9, marginRight: 10, color: 'white' }} />
+        </TouchableOpacity>
+    }
 }
 
 const styles = StyleSheet.create({

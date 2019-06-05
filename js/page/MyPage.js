@@ -8,60 +8,23 @@ import NavigationBar from '../common/NavigationBar'
 import Feather from 'react-native-vector-icons/Feather'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { MORE_MENU } from '../common/MORE_MENUE';
-import GlobalStyles from '../res/GlobalStyles';
+import GlobalStyles from '../res/styles/GlobalStyles';
 import ViewUtil from '../util/ViewUtil';
 
 // const THEME_COLOR = 'orange'
 const THEME_COLOR = '#678'
 
 class MyPage extends Component {
-    getRightButton() {
-        return (
-            <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity
-                    onPress={() => {
-
-                    }}
-                >
-                    <View style={{ padding: 5, marginRight: 8 }}>
-                        <Feather
-                            name='search'
-                            size={24}
-                            style={{ color: 'white' }}
-                        />
-                    </View>
-
-                </TouchableOpacity>
-            </View>
-        )
-    }
-    getLeftButton(callback) {
-        return (
-            <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity
-                    style={{ padding: 8, paddingLeft: 12 }}
-                    onPress={() => { }}
-                >
-                    <Ionicons
-                        name='ios-arrow-back'
-                        size={26}
-                        style={{ color: 'white' }}
-                    />
-
-                </TouchableOpacity>
-            </View>
-        )
-    }
     onClick(menu) {
         let RouteName, params = {}
         switch (menu) {
-            // case MORE_MENU.About:
-            //     RouteName = 'AboutPage'
-            //     break
             case MORE_MENU.Tutorial:
                 RouteName = 'WebViewPage'
                 params.title = '教程'
                 params.url = 'https://coding.m.imooc.com/classindex.html?cid=89'
+                break
+            case MORE_MENU.About:
+                RouteName = 'AboutPage'
                 break
             // case MORE_MENU.Custom_Theme:
             //     const { onShowCustomThemeView } = this.props
@@ -109,8 +72,6 @@ class MyPage extends Component {
             <NavigationBar
                 title='我的'
                 statusBar={statusBar}
-                rightButton={this.getRightButton()}
-                leftButton={this.getLeftButton()}
                 style={{ backgroundColor: THEME_COLOR }}
             />
         )
@@ -122,7 +83,7 @@ class MyPage extends Component {
                 <ScrollView>
                     <TouchableOpacity
                         style={styles.item}
-                        onClick={this.onClick(MORE_MENU.About)}
+                        onPress={()=>this.onClick(MORE_MENU.About)}
                     >
                         <View style={styles.about_left}>
                             <Ionicons

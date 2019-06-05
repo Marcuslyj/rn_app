@@ -6,6 +6,9 @@ import {
 import WelcomePage from '../page/WelcomePage'
 import HomePage from '../page/HomePage'
 import DetailPage from '../page/DetailPage'
+import AboutPage from '../page/about/AboutPage'
+
+
 import FetchDemoPage from '../page/FetchDemoPage'
 import DataStoreDemoPage from '../page/DataStoreDemoPage';
 
@@ -38,6 +41,12 @@ const MainNavigator = createStackNavigator({
     },
     WebViewPage: {
         screen: WebViewPage,
+        navigationOptions: {
+            header: null
+        }
+    },
+    AboutPage: {
+        screen: AboutPage,
         navigationOptions: {
             header: null
         }
