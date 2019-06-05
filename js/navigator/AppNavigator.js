@@ -16,6 +16,7 @@ import DataStoreDemoPage from '../page/DataStoreDemoPage';
 import { connect } from 'react-redux'
 import { createReactNavigationReduxMiddleware, reduxifyNavigator } from 'react-navigation-redux-helpers'
 import WebViewPage from '../page/WebViewPage';
+import AboutMePage from '../page/about/AboutMePage';
 
 const InitNavigator = createStackNavigator({
     WelcomePage: {
@@ -47,6 +48,12 @@ const MainNavigator = createStackNavigator({
     },
     AboutPage: {
         screen: AboutPage,
+        navigationOptions: {
+            header: null
+        }
+    },
+    AboutMePage: {
+        screen: AboutMePage,
         navigationOptions: {
             header: null
         }
