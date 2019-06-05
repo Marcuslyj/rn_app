@@ -9,8 +9,10 @@ import DetailPage from '../page/DetailPage'
 import FetchDemoPage from '../page/FetchDemoPage'
 import DataStoreDemoPage from '../page/DataStoreDemoPage';
 
+
 import { connect } from 'react-redux'
 import { createReactNavigationReduxMiddleware, reduxifyNavigator } from 'react-navigation-redux-helpers'
+import WebViewPage from '../page/WebViewPage';
 
 const InitNavigator = createStackNavigator({
     WelcomePage: {
@@ -30,6 +32,12 @@ const MainNavigator = createStackNavigator({
     },
     DetailPage: {
         screen: DetailPage,
+        navigationOptions: {
+            header: null
+        }
+    },
+    WebViewPage: {
+        screen: WebViewPage,
         navigationOptions: {
             header: null
         }

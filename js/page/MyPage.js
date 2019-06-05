@@ -52,8 +52,49 @@ class MyPage extends Component {
             </View>
         )
     }
-    onClick() {
-
+    onClick(menu) {
+        let RouteName, params = {}
+        switch (menu) {
+            // case MORE_MENU.About:
+            //     RouteName = 'AboutPage'
+            //     break
+            case MORE_MENU.Tutorial:
+                RouteName = 'WebViewPage'
+                params.title = '教程'
+                params.url = 'https://coding.m.imooc.com/classindex.html?cid=89'
+                break
+            // case MORE_MENU.Custom_Theme:
+            //     const { onShowCustomThemeView } = this.props
+            //     onShowCustomThemeView(true)
+            //     break
+            // case MORE_MENU.CodePush:
+            //     RouteName = 'CodePushPage'
+            //     break
+            // case MORE_MENU.Sort_Key:
+            //     RouteName = 'SortKeyPage'
+            //     params.flag = FLAG_LANGUAGE.flag_key
+            //     break
+            // case MORE_MENU.Sort_Language:
+            //     RouteName = 'SortKeyPage'
+            //     params.flag = FLAG_LANGUAGE.flag_language
+            //     break
+            // case MORE_MENU.Custom_Key:
+            // case MORE_MENU.Custom_Language:
+            // case MORE_MENU.Remove_Key:
+            //     RouteName = 'CustomKeyPage'
+            //     RouteName = 'CustomKeyPage'
+            //     params.isRemoveKey = menu === MORE_MENU.Remove_Key
+            //     params.flag = menu !== MORE_MENU.Custom_Language ? FLAG_LANGUAGE.flag_key : FLAG_LANGUAGE.flag_language
+            //     break
+            // case MORE_MENU.About_Author:
+            //     RouteName = 'AboutMePage'
+            //     break
+            default:
+                break
+        }
+        if (RouteName) {
+            NavigationUtil.goPage(params, RouteName);
+        }
     }
     getItem(menu) {
         const { theme } = this.props;
