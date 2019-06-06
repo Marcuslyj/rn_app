@@ -19,28 +19,38 @@ import { FLAG_STORAGE } from '../expand/dao/DataStore';
 import FavoriteUtil from '../util/FavoriteUtil';
 import EventBus from 'react-native-event-bus';
 import EventTypes from '../util/EventTypes';
+import { FLAG_LANGUAGE } from '../expand/dao/LanguageDao';
+import ArrayUtil from '../util/ArrayUtil';
 
 const URL = 'https://github.com/trending/'
 const THEME_COLOR = '#678'
 const EVENT_TYPE_TIME_SPAN_CHANGE = 'EVENT_TYPE_TIME_SPAN_CHANGE'
 const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_trending)
 
-export default class TrendingPage extends Component {
+class TrendingPage extends Component {
     constructor(props) {
         super(props)
-        this.tabNames = ['All', 'C', 'C#', 'PHP', 'JavaScript']
+        this.TabNav = null
+
         this.state = {
             timeSpan: TimeSpans[0]
         }
+
+        const { onLoadLanguage } = this.props
+        onLoadLanguage(FLAG_LANGUAGE.flag_language)
+        this.preKeys = [];
     }
     _genTabs() {
         const tabs = {}
-        this.tabNames.forEach((item, index) => {
-
-            tabs[`tab${index}`] = {
-                screen: props => <TrendingTabPage {...props} timeSpan={this.state.timeSpan} tabLabel={item} />,
-                navigationOptions: {
-                    title: item
+        const { languages } = this.props
+        this.preKeys = languages
+        languages.forEach((item, index) => {
+            if (item.checked) {
+                tabs[`tab${index}`] = {
+                    screen: props => <TrendingTabPage {...props} timeSpan={this.state.timeSpan} tabLabel={item.name} />,
+                    navigationOptions: {
+                        title: item.name
+                    }
                 }
             }
         })
@@ -89,7 +99,7 @@ export default class TrendingPage extends Component {
         )
     }
     _tabNav() {
-        if (!this.tabNav) {
+        if (!this.tabNav || ArrayUtil.isEqual(this.preKeys, this.props.languages)) {
             this.tabNav = createMaterialTopTabNavigator(
                 this._genTabs(),
                 {
@@ -110,6 +120,7 @@ export default class TrendingPage extends Component {
         return this.tabNav
     }
     render() {
+        const { languages } = this.props
         let statusBar = {
             backgroundColor: THEME_COLOR,
             barStyle: 'light-content'
@@ -121,17 +132,30 @@ export default class TrendingPage extends Component {
                 style={{ backgroundColor: THEME_COLOR }}
             />
         )
-        const TabNavigator = this._tabNav()
+        const TabNavigator = languages.length ? this._tabNav() : null
+
         return (
             <View style={{ flex: 1, marginTop: DeviceInfo.isIPhoneX_deprecated ? 30 : 0 }}>
                 {navigationBar}
-                <TabNavigator />
+                {TabNavigator && <TabNavigator />}
                 {this.renderTrendingDialog()}
             </View>
 
         )
     }
 }
+
+const mapTrendingStateToProps = state => ({
+    languages: state.language.languages
+})
+
+export default connect(
+    mapTrendingStateToProps,
+    {
+        onLoadLanguage: actions.onLoadLanguage
+    }
+)(TrendingPage)
+
 const pageSize = 10
 class TrendingTab extends Component {
     constructor(props) {
@@ -286,7 +310,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     tabStyle: {
-        // minWidth: 50
+        // minWidth: 50,
         padding: 0
     },
     indicatorStyle: {

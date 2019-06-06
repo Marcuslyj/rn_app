@@ -72,7 +72,6 @@ class PopularPage extends Component {
                 }
             }
         ) : null;
-        console.log(TabNavigator);
 
         return (
             <View style={{ flex: 1, marginTop: DeviceInfo.isIPhoneX_deprecated ? 30 : 0 }}>
