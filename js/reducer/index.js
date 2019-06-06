@@ -4,6 +4,7 @@ import theme from './theme/index'
 import popular from './popular/index';
 import trending from './trending/index'
 import favorite from './favorite'
+import language from './language'
 
 // 指定默认state
 const navState = RootNavigator.router.getStateForAction(RootNavigator.router.getActionForPathAndParams(rootCom))
@@ -20,7 +21,8 @@ const index = combineReducers({
     theme,
     popular,
     trending,
-    favorite
+    favorite,
+    language
 })
 
 export default index
