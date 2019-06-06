@@ -19,7 +19,7 @@ export default class AboutCommon {
     constructor(props, updateState) {
         this.props = props
         this.updateState = updateState
-        this.backPress = new BackPressComponent({ backPress: () => this.onBackPress() })
+        // this.backPress = new BackPressComponent({ backPress: () => this.onBackPress() })
     }
 
     onBackPress() {
@@ -28,34 +28,39 @@ export default class AboutCommon {
     }
 
     componentDidMount() {
-        this.backPress.componentDidMount()
-        fetch('http://www.devio.org/io/GitHubPopular/json/github_app_config.json')
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                }
-                throw new Error('Network Error');
-            })
-            .then(config => {
-                if (config) {
-                    this.updateState({
-                        data: config
-                    })
-                }
-            })
-            .catch(e => {
-                console(e);
-            })
+        // this.backPress.componentDidMount()
+        // fetch('http://www.devio.org/io/GitHubPopular/json/github_app_config.json')
+        //     .then(response => {
+        //         if (response.ok) {
+        //             return response.json();
+        //         }
+        //         throw new Error('Network Error');
+        //     })
+        //     .then(config => {
+        //         if (config) {
+        //             this.updateState({
+        //                 data: config
+        //             })
+        //         }
+        //     })
+        //     .catch(e => {
+        //         console(e);
+        //     })
     }
 
     componentWillUnmount() {
-        this.backPress.componentWillUnmount()
+        // this.backPress.componentWillUnmount()
     }
     onShare() { }
 
     getParallaxRenderConfig(params) {
         let config = {};
         let avatar = typeof (params.avatar) === 'string' ? { uri: params.avatar } : params.avatar;
+        avatar = {
+            ...avatar,
+            width: AVATAR_SIZE,
+            height: AVATAR_SIZE
+        }
         config.renderBackground = () => (
             <View key="background">
                 <Image source={{

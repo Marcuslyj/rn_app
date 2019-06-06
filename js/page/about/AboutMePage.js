@@ -116,7 +116,7 @@ export default class AboutMePage extends Component {
         )
         return (
             <View style={{ flex: 1 }}>
-                {this.aboutCommon.render(content, this.state.data.app)}
+                {this.aboutCommon.render(content, this.state.data.author)}
                 <Toast ref={toast => this.toast = toast}
                     position={'center'}
                 />
