@@ -99,7 +99,7 @@ class TrendingPage extends Component {
         )
     }
     _tabNav() {
-        if (!this.tabNav || ArrayUtil.isEqual(this.preKeys, this.props.keys)) {
+        if (!this.tabNav || !ArrayUtil.isEqual(this.preKeys, this.props.keys)) {
             this.tabNav = createMaterialTopTabNavigator(
                 this._genTabs(),
                 {
