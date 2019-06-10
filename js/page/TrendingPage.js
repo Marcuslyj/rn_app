@@ -42,9 +42,9 @@ class TrendingPage extends Component {
     }
     _genTabs() {
         const tabs = {}
-        const { languages } = this.props
-        this.preKeys = languages
-        languages.forEach((item, index) => {
+        const { keys } = this.props
+        this.preKeys = keys
+        keys.forEach((item, index) => {
             if (item.checked) {
                 tabs[`tab${index}`] = {
                     screen: props => <TrendingTabPage {...props} timeSpan={this.state.timeSpan} tabLabel={item.name} />,
@@ -99,7 +99,7 @@ class TrendingPage extends Component {
         )
     }
     _tabNav() {
-        if (!this.tabNav || ArrayUtil.isEqual(this.preKeys, this.props.languages)) {
+        if (!this.tabNav || ArrayUtil.isEqual(this.preKeys, this.props.keys)) {
             this.tabNav = createMaterialTopTabNavigator(
                 this._genTabs(),
                 {
@@ -121,7 +121,7 @@ class TrendingPage extends Component {
         return this.tabNav
     }
     render() {
-        const { languages } = this.props
+        const { keys } = this.props
         let statusBar = {
             backgroundColor: THEME_COLOR,
             barStyle: 'light-content'
@@ -133,7 +133,7 @@ class TrendingPage extends Component {
                 style={{ backgroundColor: THEME_COLOR }}
             />
         )
-        const TabNavigator = languages.length ? this._tabNav() : null
+        const TabNavigator = keys.length ? this._tabNav() : null
 
         return (
             <View style={{ flex: 1, marginTop: DeviceInfo.isIPhoneX_deprecated ? 30 : 0 }}>
@@ -147,7 +147,7 @@ class TrendingPage extends Component {
 }
 
 const mapTrendingStateToProps = state => ({
-    languages: state.language.languages
+    keys: state.language.languages
 })
 
 export default connect(
