@@ -18,6 +18,7 @@ import { createReactNavigationReduxMiddleware, reduxifyNavigator } from 'react-n
 import WebViewPage from '../page/WebViewPage';
 import AboutMePage from '../page/about/AboutMePage';
 import CustomKeyPage from '../page/CustomKeyPage'
+import SortKeyPage from '../page/SortKeyPage';
 
 const InitNavigator = createStackNavigator({
     WelcomePage: {
@@ -74,6 +75,12 @@ const MainNavigator = createStackNavigator({
             header: null
         }
     },
+    SortKeyPage: {
+        screen: SortKeyPage,
+        navigationOptions: {
+            header: null
+        }
+    }
 })
 
 // 连接两个导航器
