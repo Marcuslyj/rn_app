@@ -113,7 +113,8 @@ class TrendingPage extends Component {
                         },
                         indicatorStyle: styles.indicatorStyle,
                         labelStyle: styles.labelStyle
-                    }
+                    },
+                    lazy: true
                 }
             )
         }
