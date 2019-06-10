@@ -6,7 +6,7 @@ const { height, width } = Dimensions.get('window');
 
 export default {
     line: {
-        height: 0.5,
+        height: 0.8,
         opacity: 0.5,
         backgroundColor: 'darkgray',
     },

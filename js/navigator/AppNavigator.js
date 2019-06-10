@@ -17,6 +17,7 @@ import { connect } from 'react-redux'
 import { createReactNavigationReduxMiddleware, reduxifyNavigator } from 'react-navigation-redux-helpers'
 import WebViewPage from '../page/WebViewPage';
 import AboutMePage from '../page/about/AboutMePage';
+import CustomKeyPage from '../page/CustomKeyPage'
 
 const InitNavigator = createStackNavigator({
     WelcomePage: {
@@ -66,7 +67,13 @@ const MainNavigator = createStackNavigator({
     },
     DataStoreDemoPage: {
         screen: DataStoreDemoPage
-    }
+    },
+    CustomKeyPage: {
+        screen: CustomKeyPage,
+        navigationOptions: {
+            header: null
+        }
+    },
 })
 
 // 连接两个导航器
