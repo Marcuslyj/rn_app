@@ -178,27 +178,17 @@ class SortKeyPage extends Component {
             rightButton={ViewUtil.getRightButton('保存', () => this.onSave())}
         />;
 
-        let listdata = {}
-        this.state.checkedArray.map(item => {
-            listdata[item.name] = item
-        })
-        let order = Object.keys(listdata)
-        console.log('====================================');
-        console.log(listdata);
-        console.log('====================================');
-
         return (
             <View style={styles.container}>
                 {navigationBar}
                 <SortableListView
-                    style={{ flex: 1 }}
-                    data={listdata}
-                    order={order}
+                    data={this.state.checkedArray}
+                    order={Object.keys(this.state.checkedArray)}
                     onRowMoved={e => {
-                        order.splice(e.to, 0, order.splice(e.from, 1)[0])
+                        this.state.checkedArray.splice(e.to, 0, this.state.checkedArray.splice(e.from, 1)[0])
                         this.forceUpdate()
                     }}
-                    renderRow={row => { console.log(row); return <SortCell data={row} {...this.params} />}}
+                    renderRow={row => <SortCell data={row} {...this.params} />}
                 />
             </View>
         )
