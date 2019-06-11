@@ -27,23 +27,17 @@ class SortKeyPage extends Component {
         }
     }
     componentDidMount() {
-        console.log('====================================');
-        console.log(2);
-        console.log('====================================');
-        console.log('====================================');
-        console.log(this.props);
-        console.log('====================================');
-        //如果props中标签为空则从本地存储中获取标签
-        if (SortKeyPage._keys(this.props).length === 0) {
+        // 如果props中标签为空则从本地存储中获取标签
+        if (!this.state.checkedArray || this.state.checkedArray.length === 0) {
             let { onLoadLanguage } = this.props;
             onLoadLanguage(this.params.flag);
         }
     }
     static getDerivedStateFromProps(nextProps, prevState) {
-        const checkedArray = SortKeyPage._keys(nextProps, null, prevState)
-        if (prevState.keys !== checkedArray) {
+        const checkedArray = SortKeyPage._keys(nextProps, prevState)
+        if (prevState.checkedArray !== checkedArray) {
             return {
-                keys: checkedArray,
+                checkedArray: checkedArray,
             }
         }
         return null;
@@ -176,9 +170,6 @@ class SortKeyPage extends Component {
     }
 
     render() {
-        console.log('====================================');
-        console.log(1);
-        console.log('====================================');
         let title = this.params.flag === FLAG_LANGUAGE.flag_language ? '语言排序' : '标签排序';
         let navigationBar = <NavigationBar
             title={title}
@@ -187,21 +178,30 @@ class SortKeyPage extends Component {
             rightButton={ViewUtil.getRightButton('保存', () => this.onSave())}
         />;
 
+        let listdata = {}
+        this.state.checkedArray.map(item => {
+            listdata[item.name] = item
+        })
+        let order = Object.keys(listdata)
+        console.log('====================================');
+        console.log(listdata);
+        console.log('====================================');
+
         return (
             <View style={styles.container}>
                 {navigationBar}
                 <SortableListView
-                    data={this.state.checkedArray}
-                    order={Object.keys(this.state.checkedArray)}
+                    style={{ flex: 1 }}
+                    data={listdata}
+                    order={order}
                     onRowMoved={e => {
-                        this.state.checkedArray.splice(e.to, 0, this.state.checkedArray.splice(e.from, 1)[0])
+                        order.splice(e.to, 0, order.splice(e.from, 1)[0])
                         this.forceUpdate()
                     }}
-                    renderRow={row => <SortCell data={row} {...this.params} />}
+                    renderRow={row => { console.log(row); return <SortCell data={row} {...this.params} />}}
                 />
             </View>
         )
-
     }
 }
 
