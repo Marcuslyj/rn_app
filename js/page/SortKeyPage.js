@@ -13,8 +13,6 @@ import ArrayUtil from '../util/ArrayUtil';
 import SortableListView from 'react-native-sortable-listview'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-const THEME_COLOR = '#678'
-
 class SortKeyPage extends Component {
     constructor(props) {
         super(props);
@@ -133,11 +131,13 @@ class SortKeyPage extends Component {
         })
     }
     _checkedImage(checked) {
+        let { theme } = this.props
+
         return <Ionicons
             name={checked ? 'ios-checkbox' : 'md-square-outline'}
             size={20}
             style={{
-                color: THEME_COLOR,
+                color: theme.themeColor,
             }} />
     }
     renderCheckBox(data, index) {
@@ -170,11 +170,13 @@ class SortKeyPage extends Component {
     }
 
     render() {
+        let { theme } = this.props
+
         let title = this.params.flag === FLAG_LANGUAGE.flag_language ? '语言排序' : '标签排序';
         let navigationBar = <NavigationBar
             title={title}
             leftButton={ViewUtil.getLeftBackButton(() => this.onBack())}
-            style={{ backgroundColor: THEME_COLOR }}
+            style={{ backgroundColor: theme.themeColor }}
             rightButton={ViewUtil.getRightButton('保存', () => this.onSave())}
         />;
 
@@ -188,7 +190,7 @@ class SortKeyPage extends Component {
                         this.state.checkedArray.splice(e.to, 0, this.state.checkedArray.splice(e.from, 1)[0])
                         this.forceUpdate()
                     }}
-                    renderRow={row => <SortCell data={row} {...this.params} />}
+                    renderRow={row => <SortCellPage data={row} {...this.params} />}
                 />
             </View>
         )
@@ -196,7 +198,8 @@ class SortKeyPage extends Component {
 }
 
 const mapStateToProps = state => ({
-    language: state.language
+    language: state.language,
+    theme: state.theme.theme
 })
 
 export default connect(
@@ -209,6 +212,7 @@ export default connect(
 
 class SortCell extends Component {
     render() {
+        let { theme } = this.props
         return <TouchableHighlight
             underlayColor={'#eee'}
             style={this.props.data.checked ? styles.item : styles.hidden}
@@ -217,12 +221,17 @@ class SortCell extends Component {
                 <MaterialCommunityIcons
                     name={'sort'}
                     size={16}
-                    style={{ marginRight: 10, color: THEME_COLOR }} />
+                    style={{ marginRight: 10, color: theme.themeColor }} />
                 <Text>{this.props.data.name}</Text>
             </View>
         </TouchableHighlight>
     }
 }
+
+
+let SortCellPage = connect(state => ({
+    theme: state.theme.theme
+}))(SortCell)
 
 const styles = StyleSheet.create({
     container: {

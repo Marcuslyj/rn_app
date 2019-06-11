@@ -18,7 +18,6 @@ import { FLAG_LANGUAGE } from '../expand/dao/LanguageDao';
 
 const URL = 'https://api.github.com/search/repositories?q='
 const QUERY_STR = '&sort=stars'
-const THEME_COLOR = '#678'
 const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular)
 
 
@@ -44,16 +43,16 @@ class PopularPage extends Component {
         return tabs
     }
     render() {
-        let { keys } = this.props
+        let { keys, theme } = this.props
         let statusBar = {
-            backgroundColor: THEME_COLOR,
+            backgroundColor: theme.themeColor,
             barStyle: 'light-content'
         }
         let navigationBar = (
             <NavigationBar
                 title='最热'
                 statusBar={statusBar}
-                style={{ backgroundColor: THEME_COLOR }}
+                style={{ backgroundColor: theme.themeColor }}
             />
         )
         const TabNavigator = keys.length ? createMaterialTopTabNavigator(
@@ -64,7 +63,7 @@ class PopularPage extends Component {
                     upperCaseLabel: false,
                     scrollEnabled: true,
                     style: {
-                        backgroundColor: '#678',
+                        backgroundColor: theme.themeColor,
                         height: 30 //fix 开启scrollEnabled时，高度异常
                     },
                     indicatorStyle: styles.indicatorStyle,
@@ -85,7 +84,8 @@ class PopularPage extends Component {
 }
 
 const mapPopularStateToProps = state => ({
-    keys: state.language.keys
+    keys: state.language.keys,
+    theme: state.theme.theme
 })
 
 export default connect(
@@ -154,6 +154,7 @@ class PopularTab extends Component {
     }
     renderItem(data) {
         const item = data.item
+        let { theme } = this.props
         return (
             <PopularItem
                 projectModel={item}
@@ -164,6 +165,7 @@ class PopularTab extends Component {
                         callback
                     }, 'DetailPage')
                 }}
+                theme={theme}
                 onFavorite={(item, isFavorite) => FavoriteUtil.onFavorite(favoriteDao, item, isFavorite, FLAG_STORAGE.flag_popular)}
             />
         )
@@ -180,6 +182,7 @@ class PopularTab extends Component {
             )
     }
     render() {
+        let { theme } = this.props
         let store = this._store()
         if (!store) {
             store = {
@@ -197,11 +200,11 @@ class PopularTab extends Component {
                     refreshControl={
                         <RefreshControl
                             title={'loading'}
-                            titleColor={THEME_COLOR}
-                            colors={[THEME_COLOR]}
+                            titleColor={theme.themeColor}
+                            colors={[theme.themeColor]}
                             refreshing={store.isLoading}
                             onRefresh={() => { this.loadData() }}
-                            tintColor={THEME_COLOR}
+                            tintColor={theme.themeColor}
                         />
                     }
                     ListFooterComponent={() => this.genIndicator()}
@@ -226,7 +229,8 @@ class PopularTab extends Component {
 }
 
 const mapStateToProps = state => ({
-    popular: state.popular
+    popular: state.popular,
+    theme: state.theme.theme
 })
 
 const PopularTabPage = connect(

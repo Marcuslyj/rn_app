@@ -5,9 +5,9 @@ import NavigationBar from '../common/NavigationBar'
 import ViewUtil from '../util/ViewUtil';
 import NavigationUtil from '../navigator/NavigationUtil'
 import BackPressComponent from '../common/BackPressComponent'
+import { connect } from 'react-redux'
 
-const THEME_COLOR = '#678'
-export default class WebViewPage extends Component {
+class WebViewPage extends Component {
     constructor(props) {
         super(props)
         this.params = props.navigation.state.params
@@ -49,10 +49,11 @@ export default class WebViewPage extends Component {
         })
     }
     render() {
+        let { theme } = this.props
         let navigationBar = <NavigationBar
             title={this.state.title}
-            style={{ backgroundColor: THEME_COLOR }}
-            leftButton = {ViewUtil.getLeftBackButton(()=>{
+            style={{ backgroundColor: theme.themeColor }}
+            leftButton={ViewUtil.getLeftBackButton(() => {
                 this.onBackPress()
             })}
         />
@@ -69,6 +70,14 @@ export default class WebViewPage extends Component {
         );
     }
 }
+
+const mapStateToProps = state => ({
+    theme: state.theme.theme
+})
+
+export default connect(
+    mapStateToProps
+)(WebViewPage)
 
 const styles = StyleSheet.create({
     container: {

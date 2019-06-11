@@ -15,24 +15,22 @@ import FavoriteUtil from '../util/FavoriteUtil'
 import EventBus from 'react-native-event-bus';
 import EventTypes from '../util/EventTypes';
 
-const THEME_COLOR = '#678'
-
-export default class FavoritePage extends Component {
+class FavoritePage extends Component {
     constructor(props) {
         super(props)
-        // this.tabNames = ['最热', '趋势']
     }
 
     render() {
+        let { theme } = this.props
         let statusBar = {
-            backgroundColor: THEME_COLOR,
+            backgroundColor: theme.themeColor,
             barStyle: 'light-content'
         }
         let navigationBar = (
             <NavigationBar
                 title='收藏'
                 statusBar={statusBar}
-                style={{ backgroundColor: THEME_COLOR }}
+                style={{ backgroundColor: theme.themeColor }}
             />
         )
 
@@ -57,7 +55,7 @@ export default class FavoritePage extends Component {
                     upperCaseLabel: false,
                     // scrollEnabled: true,
                     style: {
-                        backgroundColor: '#678',
+                        backgroundColor: theme.themeColor,
                         height: 30 //fix 开启scrollEnabled时，高度异常
                     },
                     indicatorStyle: styles.indicatorStyle,
@@ -74,6 +72,13 @@ export default class FavoritePage extends Component {
         )
     }
 }
+
+const mapFavoriteStateToProps = state => ({
+    theme: state.theme.theme
+})
+
+export default connect(mapFavoriteStateToProps)(FavoritePage)
+
 class FavoriteTab extends Component {
     constructor(props) {
         super(props)
@@ -112,11 +117,13 @@ class FavoriteTab extends Component {
         FavoriteUtil.onFavorite(this.favoriteDao, item, isFavorite, this.storeName)
         if (this.storeName === FLAG_STORAGE.flag_popular) {
             EventBus.getInstance().fireEvent(EventTypes.favorite_change_popular)
-        } else {           
+        } else {
             EventBus.getInstance().fireEvent(EventTypes.favorite_change_trending)
         }
     }
     renderItem(data) {
+        let { theme } = this.props
+
         const item = data.item
         const Item = this.storeName === FLAG_STORAGE.flag_popular ? PopularItem : TrendingItem
 
@@ -130,11 +137,13 @@ class FavoriteTab extends Component {
                         callback
                     }, 'DetailPage')
                 }}
+                theme={theme}
                 onFavorite={(item, isFavorite) => this.onFavorite(item, isFavorite)}
             />
         )
     }
     render() {
+        let { theme } = this.props
         let store = this._store()
         if (!store) {
             store = {
@@ -152,11 +161,11 @@ class FavoriteTab extends Component {
                     refreshControl={
                         <RefreshControl
                             title={'loading'}
-                            titleColor={THEME_COLOR}
-                            colors={[THEME_COLOR]}
+                            titleColor={theme.themeColor}
+                            colors={[theme.themeColor]}
                             refreshing={store.isLoading}
                             onRefresh={() => { this.loadData(true) }}
-                            tintColor={THEME_COLOR}
+                            tintColor={theme.themeColor}
                         />
                     }
                 />
@@ -167,7 +176,8 @@ class FavoriteTab extends Component {
 }
 
 const mapStateToProps = state => ({
-    favorite: state.favorite
+    favorite: state.favorite,
+    theme: state.theme.theme
 })
 
 const FavoriteTabPage = connect(

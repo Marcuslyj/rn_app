@@ -7,10 +7,10 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import NavigationUtil from '../navigator/NavigationUtil'
 import BackPressComponent from '../common/BackPressComponent'
 import FavoriteDao from '../expand/dao/FavoriteDao'
+import { connect } from 'react-redux';
 
 const TRENDING_URL = 'https://github.com/'
-const THEME_COLOR = '#678'
-export default class DetailPage extends Component {
+class DetailPage extends Component {
     constructor(props) {
         super(props)
         this.params = props.navigation.state.params
@@ -89,12 +89,13 @@ export default class DetailPage extends Component {
         })
     }
     render() {
+        let { theme } = this.props
         const titleLayoutStyle = this.state.title.length > 20 ? { marginRight: 30 } : null
         let navigationBar = <NavigationBar
             leftButton={ViewUtil.getLeftBackButton(() => this.onBack())}
             title={this.state.title}
             titleLayoutStyle={titleLayoutStyle}
-            style={{ backgroundColor: THEME_COLOR }}
+            style={{ backgroundColor: theme.themeColor }}
             rightButton={this.renderRightButton()}
         />
         return (
@@ -110,6 +111,12 @@ export default class DetailPage extends Component {
         );
     }
 }
+
+const mapStateToProps = state => ({
+    theme: state.theme.theme
+})
+
+export default connect(mapStateToProps)(DetailPage)
 
 const styles = StyleSheet.create({
     container: {
