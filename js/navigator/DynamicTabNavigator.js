@@ -10,11 +10,10 @@ import FavoritePage from '../page/FavoritePage'
 import MyPage from '../page/MyPage'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import Entypo from 'react-native-vector-icons/Entypo'
-import NavigationUtil from '../navigator/NavigationUtil';
-// import { BottomTabBar } from 'react-navigation-tabs'
 import BottomTabBar from 'react-navigation/node_modules/react-navigation-tabs/src/views/BottomTabBar'
 import { connect } from 'react-redux'
 import EventTypes from '../util/EventTypes'
+import actions from '../action/index'
 
 // 配置路由页面
 const TABS = {
@@ -76,6 +75,8 @@ class DynamicTabNavigator extends Component {
     constructor(props) {
         super(props)
         console.disableYellowBox = true
+
+        this.props.onThemeInit()
     }
     _tabNavigator() {
         // 不要重复创建
@@ -128,5 +129,10 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps)(DynamicTabNavigator)
+export default connect(
+    mapStateToProps,
+    {
+        onThemeInit: actions.onThemeInit
+    }
+)(DynamicTabNavigator)
 
