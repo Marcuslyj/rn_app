@@ -1,8 +1,7 @@
 
 import React, { Component } from 'react';
-import { DeviceInfo, ActivityIndicator, FlatList, StyleSheet, Text, View, Button, RefreshControl } from 'react-native';
+import { TouchableOpacity, DeviceInfo, ActivityIndicator, FlatList, StyleSheet, Text, View, Button, RefreshControl } from 'react-native';
 import { createMaterialTopTabNavigator } from 'react-navigation'
-// import NavigationUtil from '../navigator/NavigationUtil'
 import { connect } from 'react-redux'
 import actions from '../action/index'
 import PopularItem from '../common/PopularItem'
@@ -15,6 +14,7 @@ import FavoriteUtil from '../util/FavoriteUtil';
 import EventBus from 'react-native-event-bus';
 import EventTypes from '../util/EventTypes';
 import { FLAG_LANGUAGE } from '../expand/dao/LanguageDao';
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 const URL = 'https://api.github.com/search/repositories?q='
 const QUERY_STR = '&sort=stars'
@@ -42,6 +42,26 @@ class PopularPage extends Component {
         })
         return tabs
     }
+    renderRightButton() {
+        const { theme } = this.props;
+        return <TouchableOpacity
+            onPress={() => {
+                // AnalyticsUtil.track("SearchButtonClick");
+                NavigationUtil.goPage({ theme }, 'SearchPage')
+            }}
+        >
+            <View style={{ padding: 5, marginRight: 8 }}>
+                <Ionicons
+                    name={'ios-search'}
+                    size={24}
+                    style={{
+                        marginRight: 8,
+                        alignSelf: 'center',
+                        color: 'white',
+                    }} />
+            </View>
+        </TouchableOpacity>
+    }
     render() {
         let { keys, theme } = this.props
         let statusBar = {
@@ -53,6 +73,7 @@ class PopularPage extends Component {
                 title='最热'
                 statusBar={statusBar}
                 style={{ backgroundColor: theme.themeColor }}
+                rightButton={this.renderRightButton()}
             />
         )
         const TabNavigator = keys.length ? createMaterialTopTabNavigator(

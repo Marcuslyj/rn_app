@@ -2,7 +2,7 @@ import ProjectModel from '../model/ProjectModel'
 import Utils from '../util/Utils'
 
 // 处理下拉刷新的数据
-export function handleData(actionType, dispatch, storeName, data, pageSize, favoriteDao) {
+export function handleData(actionType, dispatch, storeName, data, pageSize, favoriteDao, params) {
     let fixItems = []
     if (data && data.data) {
         if (Array.isArray(data.data)) {
@@ -20,7 +20,8 @@ export function handleData(actionType, dispatch, storeName, data, pageSize, favo
             storeName,
             projectModels,
             pageIndex: 1,
-            hideLoadingMore: pageSize > fixItems.length ? false : true
+            hideLoadingMore: pageSize > fixItems.length ? false : true,
+            ...params
         })
     })
 
@@ -46,3 +47,9 @@ export async function _projectModels(showItems, favoriteDao, callback) {
         callback(projectModels)
     }
 }
+
+export const doCallBack = (callBack, object) => {
+    if (typeof callBack === 'function') {
+        callBack(object);
+    }
+};

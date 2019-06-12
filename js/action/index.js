@@ -3,20 +3,36 @@ import { onRefreshPopular, onLoadMorePopular, onFlushPopularFavorite } from './p
 import { onRefreshTrending, onLoadMoreTrending, onFlushTrendingFavorite } from './trending'
 import { onLoadFavoriteData } from './favorite'
 import { onLoadLanguage } from './language'
+import { onSearch, onSearchCancel, onLoadMoreSearch } from './search';
 
 export default {
+    /**
+     * 主题
+     */
     onThemeChange,
     onThemeInit,
     onShowCustomThemeView,
-
+    /**
+     * popular
+     */
     onRefreshPopular,
     onLoadMorePopular,
     onFlushPopularFavorite,
-
+    /**
+     * trending
+     */
     onRefreshTrending,
     onLoadMoreTrending,
     onLoadFavoriteData,
     onFlushTrendingFavorite,
-    
-    onLoadLanguage
+    /**
+     * 自定义语言
+     */
+    onLoadLanguage,
+    /**
+     * 搜索
+     */
+    onSearch,
+    onSearchCancel,
+    onLoadMoreSearch
 }
