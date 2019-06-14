@@ -2,10 +2,13 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import NavigationUtil from '../navigator/NavigationUtil'
+import SplashScreen from 'react-native-splash-screen'
 
 export default class WelcomePage extends Component {
     componentDidMount() {
         this.timer = setTimeout(() => {
+            SplashScreen.hide();
+
             const { navigation } = this.props
 
             NavigationUtil.resetToHomePage({
@@ -17,11 +20,12 @@ export default class WelcomePage extends Component {
         this.timer && clearTimeout(this.timer)
     }
     render() {
-        return (
-            <View style={styles.container}>
-                <Text style={styles.welcome}>WelcomePage</Text>
-            </View>
-        );
+        return null
+        // return (
+        //     <View style={styles.container}>
+        //         <Text style={styles.welcome}>WelcomePage</Text>
+        //     </View>
+        // );
     }
 }
 

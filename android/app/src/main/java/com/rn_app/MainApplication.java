@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.example.trackshare.TrackShareReactPackage;
 import com.facebook.react.ReactApplication;
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactNativeHost;
@@ -25,10 +26,11 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-            new AsyncStoragePackage(),
-            new VectorIconsPackage()
-              // new TrackShareReactPackage()
+        new MainReactPackage(), 
+        new SplashScreenReactPackage(),
+        new AsyncStoragePackage(), 
+        new VectorIconsPackage()
+      // new TrackShareReactPackage()
       );
     }
 
