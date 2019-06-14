@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { ViewPropTypes, Text, StatusBar, StyleSheet, View, Platform } from 'react-native'
+import { ViewPropTypes, Text, StatusBar, StyleSheet, View, Platform, DeviceInfo } from 'react-native'
 import { PropTypes } from 'prop-types'
 
 const NAV_BAR_HEIGHT_IOS = 44
 const NAV_BAR_HEIGHT_ANDROID = 50
-const STATUS_BAR_HEIGHT = 20
+const STATUS_BAR_HEIGHT = DeviceInfo.isIPhoneX_deprecated ? 0 : 20;//状态栏的高度
 
 const StatusBarShape = {
     barStyle: PropTypes.oneOf(['light-content', 'default']),

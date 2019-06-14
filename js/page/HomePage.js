@@ -8,6 +8,7 @@ import BackPressComponent from '../common/BackPressComponent'
 import actions from '../action/index';
 import { View } from 'react-native'
 import CustomTheme from '../page/CustomTheme';
+import SafeAreaViewPlus from '../common/SafeAreaViewPlus'
 
 class HomePage extends Component {
     constructor(props) {
@@ -32,14 +33,18 @@ class HomePage extends Component {
         />)
     }
     render() {
+        const { theme } = this.props;
+
         // 外层navigation存起来
         NavigationUtil.navigation = this.props.navigation
 
         return (
-            <View style={{ flex: 1 }}>
+            <SafeAreaViewPlus
+                topColor={theme.themeColor}
+            >
                 <DynamicTabNavigator />
                 {this.renderCustomThemeView()}
-            </View>
+            </SafeAreaViewPlus>
         )
     }
     onBackPress = () => {

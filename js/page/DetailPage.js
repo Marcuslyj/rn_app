@@ -8,6 +8,7 @@ import NavigationUtil from '../navigator/NavigationUtil'
 import BackPressComponent from '../common/BackPressComponent'
 import FavoriteDao from '../expand/dao/FavoriteDao'
 import { connect } from 'react-redux';
+import SafeAreaViewPlus from '../common/SafeAreaViewPlus';
 
 const TRENDING_URL = 'https://github.com/'
 class DetailPage extends Component {
@@ -99,7 +100,9 @@ class DetailPage extends Component {
             rightButton={this.renderRightButton()}
         />
         return (
-            <View style={styles.container}>
+            <SafeAreaViewPlus
+                topColor={theme.themeColor}
+            >
                 {navigationBar}
                 <WebView
                     ref={webView => this.webView = webView}
@@ -107,7 +110,7 @@ class DetailPage extends Component {
                     onNavigationStateChange={e => this.onNavigationStateChange(e)}
                     source={{ uri: this.state.url }}
                 />
-            </View>
+            </SafeAreaViewPlus>
         );
     }
 }
