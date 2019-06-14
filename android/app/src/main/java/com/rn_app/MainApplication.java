@@ -2,6 +2,7 @@ package com.rn_app;
 
 import android.app.Application;
 
+import com.example.trackshare.TrackShareReactPackage;
 import com.facebook.react.ReactApplication;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -27,6 +28,7 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
             new AsyncStoragePackage(),
             new VectorIconsPackage()
+              // new TrackShareReactPackage()
       );
     }
 

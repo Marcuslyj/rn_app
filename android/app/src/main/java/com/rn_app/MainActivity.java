@@ -1,6 +1,9 @@
 package com.rn_app;
 
+import android.os.Bundle;
+
 import com.facebook.react.ReactActivity;
+import com.umeng.analytics.MobclickAgent;
 
 public class MainActivity extends ReactActivity {
 
@@ -11,5 +14,24 @@ public class MainActivity extends ReactActivity {
     @Override
     protected String getMainComponentName() {
         return "rn_app";
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        MobclickAgent.setSessionContinueMillis(1000);
+        MobclickAgent.setScenarioType(this,MobclickAgent.EScenarioType.E_DUM_NORMAL);
     }
 }
